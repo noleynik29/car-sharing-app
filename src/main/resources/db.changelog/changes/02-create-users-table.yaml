@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-users-table
+      author: noleynik29
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "admin@gmail.com" }
+              - column: { name: password, value: "//" }
+              - column: { name: first_name, value: "admin" }
+              - column: { name: last_name, value: "admin" }
+              - column: { name: role, value: "ADMIN" }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "manager@gmail.com" }
+              - column: { name: password, value: "//" }
+              - column: { name: first_name, value: "manager" }
+              - column: { name: last_name, value: "manager" }
+              - column: { name: role, value: "MANAGER" }
