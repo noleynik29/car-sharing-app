@@ -140,11 +140,11 @@ class RentalRepositoryTest {
         User user = persistUser();
         Car car = persistCar();
         rentalRepository.save(TestUtil.createRental(car, user,
-                LocalDate.now().minusDays(10), LocalDate.now().minusDays(3), null)); // overdue
+                LocalDate.now().minusDays(10), LocalDate.now().minusDays(3), null));
         rentalRepository.save(TestUtil.createRental(car, user,
-                LocalDate.now().minusDays(1), LocalDate.now().plusDays(5), null)); // not yet due
+                LocalDate.now().minusDays(1), LocalDate.now().plusDays(5), null));
         rentalRepository.save(TestUtil.createRental(car, user,
-                LocalDate.now().minusDays(10), LocalDate.now().minusDays(3), LocalDate.now().minusDays(2))); // already returned
+                LocalDate.now().minusDays(10), LocalDate.now().minusDays(3), LocalDate.now().minusDays(2)));
 
         List<Rental> overdue = rentalRepository.findByReturnDateBeforeAndActualReturnDateIsNull(LocalDate.now());
 

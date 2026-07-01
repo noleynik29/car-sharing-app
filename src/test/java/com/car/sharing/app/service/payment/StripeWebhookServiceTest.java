@@ -200,7 +200,6 @@ class StripeWebhookServiceTest {
             mockedWebhook.when(() -> Webhook.constructEvent("payload", "bad_sig", "whsec_test_secret"))
                     .thenThrow(new SignatureVerificationException("Invalid signature", "bad_sig"));
 
-            // must NOT propagate — the service catches and logs it
             stripeWebhookService.handleWebhook("payload", "bad_sig");
 
             verify(paymentRepository, never()).findBySessionId(any());

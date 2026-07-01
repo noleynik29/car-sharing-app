@@ -156,7 +156,6 @@ class PaymentServiceImplTest {
     @Test
     @DisplayName("Should calculate total rent price for PAYMENT type")
     void createPayment_PaymentType_CalculatesTotalRentPrice() throws StripeException {
-        // 4 days * 45.50 = 182.00
         CreatePaymentRequest request = new CreatePaymentRequest(1L, Payment.Type.PAYMENT);
         Payment mappedPayment = Payment.builder().type(Payment.Type.PAYMENT).build();
         Session mockSession = new Session();
@@ -184,7 +183,6 @@ class PaymentServiceImplTest {
     @Test
     @DisplayName("Should calculate fine price for FINE type")
     void createPayment_FineType_CalculatesFinePrice() throws StripeException {
-        // 2 days overdue * 45.50 * 1.15 = 104.65
         rental.setReturnDate(LocalDate.of(2026, 6, 5));
         rental.setActualReturnDate(LocalDate.of(2026, 6, 7));
         BigDecimal expectedFine = BigDecimal.valueOf(45.50)
@@ -253,7 +251,6 @@ class PaymentServiceImplTest {
     @Test
     @DisplayName("Should throw PaymentProcessingException when FINE requested but no overdue")
     void createPayment_FineWithNoOverdue_ThrowsPaymentProcessingException() {
-        // returnDate in future = not overdue yet
         rental.setReturnDate(LocalDate.now().plusDays(5));
         rental.setActualReturnDate(null);
         CreatePaymentRequest request = new CreatePaymentRequest(1L, Payment.Type.FINE);

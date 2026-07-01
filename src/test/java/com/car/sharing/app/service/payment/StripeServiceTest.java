@@ -103,7 +103,6 @@ class StripeServiceTest {
     @Test
     @DisplayName("Should convert amount to cents correctly")
     void createStripeSession_ConvertsAmountToCents() throws StripeException {
-        // 45.50 USD → 4550 cents
         Session mockSession = new Session();
         mockSession.setId("cs_test_cents");
 
@@ -111,7 +110,6 @@ class StripeServiceTest {
             mockedSession.when(() -> Session.create(any(SessionCreateParams.class)))
                     .thenReturn(mockSession);
 
-            // If conversion is wrong (e.g. truncation), longValueExact() would throw ArithmeticException
             Session result = stripeService.createStripeSession(
                     paymentRental, BigDecimal.valueOf(45.50), Payment.Type.PAYMENT);
 
@@ -125,7 +123,6 @@ class StripeServiceTest {
     @DisplayName("Should throw ArithmeticException when amount has more than 2 decimal places")
     void createStripeSession_AmountWithTooManyDecimals_ThrowsArithmeticException() {
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
-            // 45.501 * 100 = 4550.1 — longValueExact() can't represent as long
             assertThrows(ArithmeticException.class, () ->
                     stripeService.createStripeSession(
                             paymentRental,
@@ -222,7 +219,6 @@ class StripeServiceTest {
     @Test
     @DisplayName("Should include overdue days in description for FINE type")
     void createStripeSession_FineType_DescriptionContainsOverdueDays() throws StripeException {
-        // returnDate: June 5, actualReturnDate: June 8 → 3 days overdue
         Session mockSession = new Session();
         mockSession.setId("cs_test_fine_desc");
 
@@ -245,8 +241,6 @@ class StripeServiceTest {
                     fineRental, BigDecimal.valueOf(104.65), Payment.Type.FINE);
         }
     }
-
-    // ─── getStripeSession() ───────────────────────────────────────────────────
 
     @Test
     @DisplayName("Should return session when retrieved successfully")
