@@ -110,6 +110,58 @@ Controller  ──►  Service  ──►  Repository  ──►  MySQL DB
 
 ---
 
+## 🗂️ Data Model
+
+```mermaid
+erDiagram
+    users {
+        BIGINT id PK
+        VARCHAR email
+        VARCHAR first_name
+        VARCHAR last_name
+        VARCHAR password
+        VARCHAR role "CUSTOMER | MANAGER | ADMIN"
+        BOOLEAN is_deleted
+    }
+
+    cars {
+        BIGINT id PK
+        VARCHAR model
+        VARCHAR brand
+        VARCHAR type "SEDAN | SUV | HATCHBACK | UNIVERSAL"
+        INT inventory
+        DECIMAL daily_fee
+        BOOLEAN is_deleted
+    }
+
+    rentals {
+        BIGINT id PK
+        DATE rental_date
+        DATE return_date
+        DATE actual_return_date
+        BIGINT car_id FK
+        BIGINT user_id FK
+    }
+
+    payments {
+        BIGINT id PK
+        VARCHAR status "PENDING | PAID | CANCELED | EXPIRED"
+        VARCHAR type "PAYMENT | FINE"
+        BIGINT rental_id FK
+        VARCHAR session_url
+        VARCHAR session_id
+        DECIMAL amount_to_pay
+    }
+
+    users ||--o{ rentals : "has"
+    cars  ||--o{ rentals : "booked via"
+    rentals ||--o{ payments : "paid via"
+```
+
+> `users` and `cars` use soft delete — deleted records are excluded from all queries automatically via Hibernate's `@SQLRestriction("is_deleted = false")`.
+
+---
+
 ## 🔐 Security
 
 Authentication and authorization are handled by **Spring Security** with **JWT tokens**.
